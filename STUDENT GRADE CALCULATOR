@@ -1,0 +1,122 @@
+students = []
+
+def calculate_grade(percentage):
+    if percentage >= 90:
+        return "A+"
+    elif percentage >= 80:
+        return "A"
+    elif percentage >= 70:
+        return "B"
+    elif percentage >= 60:
+        return "C"
+    elif percentage >= 50:
+        return "D"
+    else:
+        return "F"
+
+
+def add_student():
+    name = input("\nEnter student name: ")
+
+    marks = []
+
+    for subject in ["Maths", "Physics", "Chemistry"]:
+        while True:
+            try:
+                mark = float(input(f"Enter {subject} marks (0-100): "))
+
+                if 0 <= mark <= 100:
+                    marks.append(mark)
+                    break
+                else:
+                    print("Enter marks between 0 and 100.")
+
+            except ValueError:
+                print("Please enter a valid number.")
+
+    total = sum(marks)
+    percentage = total / 3
+    grade = calculate_grade(percentage)
+
+    if all(mark >= 35 for mark in marks):
+        result = "PASS"
+    else:
+        result = "FAIL"
+
+    student = {
+        "name": name,
+        "marks": marks,
+        "total": total,
+        "percentage": percentage,
+        "grade": grade,
+        "result": result
+    }
+
+    students.append(student)
+
+    print("\nStudent added successfully!")
+
+
+def display_students():
+    if not students:
+        print("\nNo student records found.")
+        return
+
+    print("\n========== STUDENT RESULTS ==========")
+
+    for student in students:
+        print("\nName:", student["name"])
+        print("Maths:", student["marks"][0])
+        print("Physics:", student["marks"][1])
+        print("Chemistry:", student["marks"][2])
+        print("Total:", student["total"], "/ 300")
+        print("Percentage:", round(student["percentage"], 2), "%")
+        print("Grade:", student["grade"])
+        print("Result:", student["result"])
+        print("-------------------------------------")
+
+
+def search_student():
+    name = input("\nEnter student name to search: ")
+
+    found = False
+
+    for student in students:
+        if student["name"].lower() == name.lower():
+            print("\nStudent Found")
+            print("Name:", student["name"])
+            print("Total:", student["total"])
+            print("Percentage:", round(student["percentage"], 2), "%")
+            print("Grade:", student["grade"])
+            print("Result:", student["result"])
+            found = True
+            break
+
+    if not found:
+        print("Student not found.")
+
+
+while True:
+    print("\n========== STUDENT GRADE CALCULATOR ==========")
+    print("1. Add Student")
+    print("2. Display All Students")
+    print("3. Search Student")
+    print("4. Exit")
+
+    choice = input("Enter your choice: ")
+
+    if choice == "1":
+        add_student()
+
+    elif choice == "2":
+        display_students()
+
+    elif choice == "3":
+        search_student()
+
+    elif choice == "4":
+        print("\nThank you for using Student Grade Calculator!")
+        break
+
+    else:
+        print("\nInvalid choice. Please try again.")
